@@ -1,51 +1,65 @@
-# CoachShare Server
+# CoachShare API
 
-Backend API for the CoachShare application.
+This is the backend/server for the CoachShare application.
 
-## Multiple Coaches Feature
+## About
 
-### Overview
+The CoachShare API provides the backend services for the CoachShare application, handling authentication, user management, and other core functionalities.
 
-The application now supports multiple coaches per athlete, allowing different coaches to assign regimens to the same athlete. This enhances collaboration and flexibility in training programs.
+## Features
 
-### Model Changes
+- User authentication and authorization
+- Coach and client management
+- Regimen management
+- Profile management
+- Email verification
+- Password reset functionality
 
-- Added `coaches` array to the User model to store multiple coach references
-- Added `primaryCoachId` to maintain backward compatibility and identify the main coach
-- Maintained legacy `coachId` for backward compatibility
+## API Endpoints
 
-### Key Functions Updated
+- `/api/auth` - Authentication endpoints
+- `/api/users` - User management
+- `/api/coaches` - Coach-specific endpoints
+- `/api/clients` - Client-specific endpoints
+- `/api/regimens` - Regimen management
 
-1. **requestCoach** - Athletes can now connect with multiple coaches without losing existing connections
-2. **assignRegimen** - Coaches can assign regimens to athletes connected to them (primary or secondary)
-3. **getAthleteRegimens** - Athletes can see regimens from all connected coaches
-4. **removeAthlete** - Enhanced security checks to verify coach-athlete relationship
+## Environment Variables
 
-### Migration
+Required environment variables:
+- `NODE_ENV` - Environment (development/production)
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - Secret for JWT token generation
+- `JWT_EXPIRES_IN` - JWT token expiration time
+- `JWT_COOKIE_EXPIRES_IN` - Cookie expiration time
+- `CORS_ORIGIN` - Allowed CORS origin
 
-A migration script has been provided to update existing athletes to the new model:
+## Development
 
-```bash
-# Run migration script
-npm run migrate-coaches
-```
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-The migration script:
-- Identifies athletes with a coach but without populated coaches array
-- Sets their existing coach as the primary coach
-- Adds the coach to the coaches array
-- Preserves all existing relationships
+2. Set up environment variables:
+   Create a `.env` file in the root directory with the required variables.
 
-### Security Considerations
+3. Start development server:
+   ```bash
+   npm run dev
+   ```
 
-- Access control checks have been updated to validate relationships through the new model
-- Backward compatibility is maintained for existing features
-- All API endpoints validate proper coach-athlete relationships before allowing regimen assignments
+## Production
 
-### Testing
+1. Build the application:
+   ```bash
+   npm install
+   ```
 
-After migration, verify that:
-1. Existing athlete-coach relationships are preserved
-2. Athletes can connect with multiple coaches
-3. Each coach can assign regimens to their athletes
-4. Athletes can view regimens from all connected coaches 
+2. Start the server:
+   ```bash
+   npm start
+   ```
+
+## License
+
+MIT
