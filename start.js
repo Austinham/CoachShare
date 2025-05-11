@@ -51,6 +51,11 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Friendly message for root path
+app.get('/', (req, res) => {
+  res.send('CoachShare API is running!');
+});
+
 // Error handling
 app.use((err, req, res, next) => {
   console.error('Error:', err);
