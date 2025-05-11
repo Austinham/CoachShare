@@ -19,28 +19,14 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: function(origin, callback) {
-    const allowedOrigins = [
-      'https://coachshare-16n69civk-austinhams-projects.vercel.app',
-      'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
-      'https://coachshare-kqfsy9xis-austinhams-projects.vercel.app',
-      'https://coachshare.vercel.app'
-    ];
-    
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
+    'https://coachshare-kqfsy9xis-austinhams-projects.vercel.app',
+    'https://coachshare-9qioh1snj-austinhams-projects.vercel.app'
+  ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  maxAge: 86400 // 24 hours
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Trust proxy for rate limiting
