@@ -20,17 +20,24 @@ const app = express();
 app.use(helmet());
 app.use(cors({
   origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow all Vercel preview URLs
+    if (origin.includes('vercel.app')) {
+      return callback(null, true);
+    }
+    
     const allowedOrigins = [
       'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
       'https://coachshare-kqfsy9xis-austinhams-projects.vercel.app',
       'https://coachshare-9qioh1snj-austinhams-projects.vercel.app',
-      'https://coachshare-8q2566wm4-austinhams-projects.vercel.app'
+      'https://coachshare-8q2566wm4-austinhams-projects.vercel.app',
+      'http://localhost:5173', // For local development
+      'http://localhost:3000'  // For local development
     ];
     
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       console.log('CORS blocked request from origin:', origin);
