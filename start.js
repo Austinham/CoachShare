@@ -19,14 +19,29 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: [
-    'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
-    'https://coachshare-kqfsy9xis-austinhams-projects.vercel.app',
-    'https://coachshare-9qioh1snj-austinhams-projects.vercel.app'
-  ],
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
+      'https://coachshare-kqfsy9xis-austinhams-projects.vercel.app',
+      'https://coachshare-9qioh1snj-austinhams-projects.vercel.app',
+      'https://coachshare-8q2566wm4-austinhams-projects.vercel.app'
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked request from origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 86400 // 24 hours
 }));
 
 // Trust proxy for rate limiting
