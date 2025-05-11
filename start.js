@@ -19,8 +19,14 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
-  credentials: true
+  origin: [
+    'https://coachshare-3u5uin8gn-austinhams-projects.vercel.app',
+    'https://coachshare-kqfsy9xis-austinhams-projects.vercel.app',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Rate limiting
