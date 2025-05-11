@@ -166,7 +166,26 @@ exports.login = catchAsync(async (req, res, next) => {
 // @access  Private
 exports.getMe = catchAsync(async (req, res, next) => {
   try {
+    console.log('Getting current user, user ID:', req.user.id);
+    
+    if (!req.user || !req.user.id) {
+      console.error('No user found in request');
+      return res.status(401).json({
+        status: 'error',
+        message: 'Not authenticated'
+      });
+    }
+
     const user = await User.findById(req.user.id);
+    if (!user) {
+      console.error('User not found in database:', req.user.id);
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found'
+      });
+    }
+
+    console.log('User found:', user.email);
     res.status(200).json({
       status: 'success',
       data: {
@@ -174,7 +193,11 @@ exports.getMe = catchAsync(async (req, res, next) => {
       }
     });
   } catch (error) {
-    next(error);
+    console.error('Error in getMe:', error);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error retrieving user data'
+    });
   }
 });
 
