@@ -46,9 +46,14 @@ app.use('/api/coaches', coachRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/regimens', regimenRoutes);
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Error handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error:', err);
   res.status(err.status || 500).json({
     status: 'error',
     message: err.message || 'Internal server error'
@@ -56,16 +61,38 @@ app.use((err, req, res, next) => {
 });
 
 // Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  }
+};
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-}); 
+// Initialize the app
+const init = async () => {
+  try {
+    await connectDB();
+    
+    if (process.env.NODE_ENV !== 'production') {
+      const PORT = process.env.PORT || 3000;
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    }
+  } catch (err) {
+    console.error('Initialization error:', err);
+    process.exit(1);
+  }
+};
+
+// Start the app
+init();
+
+// Export for Vercel
+module.exports = app; 
