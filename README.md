@@ -1,65 +1,82 @@
-# CoachShare API
+# CoachShare Frontend
 
-This is the backend/server for the CoachShare application.
+CoachShare is a platform that connects coaches with clients, enabling seamless sharing of training regimens and workout plans.
 
-## About
+## Technologies Used
 
-The CoachShare API provides the backend services for the CoachShare application, handling authentication, user management, and other core functionalities.
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-## Features
+## Getting Started
 
-- User authentication and authorization
-- Coach and client management
-- Regimen management
-- Profile management
-- Email verification
-- Password reset functionality
+### Prerequisites
 
-## API Endpoints
+- Node.js (v16 or higher)
+- npm (v7 or higher)
 
-- `/api/auth` - Authentication endpoints
-- `/api/users` - User management
-- `/api/coaches` - Coach-specific endpoints
-- `/api/clients` - Client-specific endpoints
-- `/api/regimens` - Regimen management
+### Installation
 
-## Environment Variables
+1. Clone the repository:
+```bash
+git clone https://github.com/Austinham/coachshare-frontend.git
+cd coachshare-frontend
+```
 
-Required environment variables:
-- `NODE_ENV` - Environment (development/production)
-- `MONGODB_URI` - MongoDB connection string
-- `JWT_SECRET` - Secret for JWT token generation
-- `JWT_EXPIRES_IN` - JWT token expiration time
-- `JWT_COOKIE_EXPIRES_IN` - Cookie expiration time
-- `CORS_ORIGIN` - Allowed CORS origin
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory with the following variables:
+```env
+VITE_API_URL=https://coachshare-api.vercel.app/api
+VITE_CLIENT_URL=https://coachshare.vercel.app
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
 
 ## Development
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+The development server will start at `http://localhost:5173` by default.
 
-2. Set up environment variables:
-   Create a `.env` file in the root directory with the required variables.
+## Building for Production
 
-3. Start development server:
-   ```bash
-   npm run dev
-   ```
+To create a production build:
 
-## Production
+```bash
+npm run build
+```
 
-1. Build the application:
-   ```bash
-   npm install
-   ```
+The build output will be in the `dist` directory.
 
-2. Start the server:
-   ```bash
-   npm start
-   ```
+## Deployment
+
+This project is deployed on Vercel. The production URL is: https://coachshare.vercel.app
+
+## Project Structure
+
+- `src/` - Source code
+  - `components/` - React components
+  - `lib/` - Utility functions and API clients
+  - `pages/` - Page components
+  - `types/` - TypeScript type definitions
+  - `App.tsx` - Main application component
+  - `main.tsx` - Application entry point
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT
+This project is licensed under the MIT License.
